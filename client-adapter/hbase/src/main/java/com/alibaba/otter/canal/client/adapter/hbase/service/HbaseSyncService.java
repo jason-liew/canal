@@ -31,6 +31,7 @@ public class HbaseSyncService {
     public void sync(MappingConfig config, Dml dml) {
         if (config != null) {
             String type = dml.getType();
+            logger.debug("BIG DML: {}", JSON.toJSONString(dml, SerializerFeature.WriteMapNullValue));
             if (type != null && type.equalsIgnoreCase("INSERT")) {
                 insert(config, dml);
             } else if (type != null && type.equalsIgnoreCase("UPDATE")) {
@@ -39,7 +40,7 @@ public class HbaseSyncService {
                 delete(config, dml);
             }
             if (logger.isDebugEnabled()) {
-                logger.debug("DML: {}", JSON.toJSONString(dml, SerializerFeature.WriteMapNullValue));
+                logger.debug("BIG DEBUG DML: {}", JSON.toJSONString(dml, SerializerFeature.WriteMapNullValue));
             }
         }
     }

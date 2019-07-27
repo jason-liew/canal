@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.google.cloud.bigtable.hbase.BigtableConfiguration;
+import com.google.cloud.bigtable.hbase.BigtableOptionsFactory;
+
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -39,7 +43,7 @@ public class HbaseTemplate {
 
     private void initConn() {
         try {
-            this.conn = ConnectionFactory.createConnection(hbaseConfig);
+           this.conn = ConnectionFactory.createConnection(this.hbaseConfig);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -53,16 +57,15 @@ public class HbaseTemplate {
     }
 
     public boolean tableExists(String tableName) {
-        try (HBaseAdmin admin = (HBaseAdmin) getConnection().getAdmin()) {
-
-            return admin.tableExists(TableName.valueOf(tableName));
+        try {
+            return getConnection().getAdmin().tableExists(TableName.valueOf(tableName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void createTable(String tableName, String... familyNames) {
-        try (HBaseAdmin admin = (HBaseAdmin) getConnection().getAdmin()) {
+        try {
 
             HTableDescriptor desc = new HTableDescriptor(TableName.valueOf(tableName));
             // 添加列簇
@@ -72,7 +75,7 @@ public class HbaseTemplate {
                     desc.addFamily(hcd);
                 }
             }
-            admin.createTable(desc);
+            getConnection().getAdmin().createTable(desc);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -109,12 +112,12 @@ public class HbaseTemplate {
     public Boolean put(String tableName, HRow hRow) {
         boolean flag = false;
         try {
-            HTable table = (HTable) getConnection().getTable(TableName.valueOf(tableName));
+          //  HTable table = (HTable) getConnection().getTable(TableName.valueOf(tableName));
             Put put = new Put(hRow.getRowKey());
             for (HRow.HCell hCell : hRow.getCells()) {
                 put.addColumn(Bytes.toBytes(hCell.getFamily()), Bytes.toBytes(hCell.getQualifier()), hCell.getValue());
             }
-            table.put(put);
+            getConnection().getTable(TableName.valueOf(tableName)).put(put);
             flag = true;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -134,7 +137,8 @@ public class HbaseTemplate {
     public Boolean puts(String tableName, List<HRow> rows) {
         boolean flag = false;
         try {
-            HTable table = (HTable) getConnection().getTable(TableName.valueOf(tableName));
+           // HTable table = (HTable) getConnection().getTable(TableName.valueOf(tableName));
+       //     Table table =  getConnection().getTable(TableName.valueOf(tableName));
             List<Put> puts = new ArrayList<>();
             for (HRow hRow : rows) {
                 Put put = new Put(hRow.getRowKey());
@@ -146,7 +150,8 @@ public class HbaseTemplate {
                 puts.add(put);
             }
             if (!puts.isEmpty()) {
-                table.put(puts);
+         //       table.put(puts);
+                getConnection().getTable(TableName.valueOf(tableName)).put(puts);
             }
             flag = true;
         } catch (Exception e) {
@@ -166,14 +171,14 @@ public class HbaseTemplate {
     public Boolean deletes(String tableName, Set<byte[]> rowKeys) {
         boolean flag = false;
         try {
-            HTable table = (HTable) getConnection().getTable(TableName.valueOf(tableName));
+      //      HTable table = (HTable) getConnection().getTable(TableName.valueOf(tableName));
             List<Delete> deletes = new ArrayList<>();
             for (byte[] rowKey : rowKeys) {
                 Delete delete = new Delete(rowKey);
                 deletes.add(delete);
             }
             if (!deletes.isEmpty()) {
-                table.delete(deletes);
+                getConnection().getTable(TableName.valueOf(tableName)).delete(deletes);
             }
             flag = true;
         } catch (Exception e) {

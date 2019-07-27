@@ -98,7 +98,7 @@ public class HbaseEtlService {
             createTable(hbaseTemplate, config);
 
             // 拼接sql
-            String sql = "SELECT * FROM " + config.getHbaseMapping().getDatabase() + "." + hbaseMapping.getTable();
+            String sql = "SELECT * FROM `" + config.getHbaseMapping().getDatabase() + "`.`" + hbaseMapping.getTable() + "`";
 
             // 拼接条件
             if (params != null && params.size() == 1 && hbaseMapping.getEtlCondition() == null) {
