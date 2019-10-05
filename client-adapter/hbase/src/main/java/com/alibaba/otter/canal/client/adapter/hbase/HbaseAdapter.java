@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.sql.DataSource;
+
+import com.google.cloud.bigtable.hbase.BigtableConfiguration;
+import com.google.cloud.bigtable.hbase.BigtableOptionsFactory;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -15,6 +20,9 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.FirstKeyOnlyFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import com.alibaba.otter.canal.client.adapter.OuterAdapter;
 import com.alibaba.otter.canal.client.adapter.hbase.config.MappingConfig;
@@ -91,9 +99,13 @@ public class HbaseAdapter implements OuterAdapter {
 
             Map<String, String> properties = configuration.getProperties();
 
-            Configuration hbaseConfig = HBaseConfiguration.create();
-            properties.forEach(hbaseConfig::set);
-            hbaseTemplate = new HbaseTemplate(hbaseConfig);
+       //     Configuration hbaseConfig = HBaseConfiguration.create();
+       //     properties.forEach(hbaseConfig::set);
+
+            Configuration config = BigtableConfiguration.configure(properties.get("projectID"), properties.get("instanceID"));
+            config.set(BigtableOptionsFactory.APP_PROFILE_ID_KEY, properties.get("profileID"));
+
+            hbaseTemplate = new HbaseTemplate(config);
             hbaseSyncService = new HbaseSyncService(hbaseTemplate);
 
             configMonitor = new HbaseConfigMonitor();
@@ -122,6 +134,7 @@ public class HbaseAdapter implements OuterAdapter {
         String database = dml.getDatabase();
         String table = dml.getTable();
         Map<String, MappingConfig> configMap;
+
         if (envProperties != null && !"tcp".equalsIgnoreCase(envProperties.getProperty("canal.conf.mode"))) {
             configMap = mappingConfigCache.get(destination + "-" + groupId + "_" + database + "-" + table);
         } else {
@@ -131,9 +144,9 @@ public class HbaseAdapter implements OuterAdapter {
             List<MappingConfig> configs = new ArrayList<>();
             configMap.values().forEach(config -> {
                 if (StringUtils.isNotEmpty(config.getGroupId())) {
-                    if (config.getGroupId().equals(dml.getGroupId())) {
+     //               if (config.getGroupId().equals(dml.getGroupId())) {
                         configs.add(config);
-                    }
+       //             }
                 } else {
                     configs.add(config);
                 }
