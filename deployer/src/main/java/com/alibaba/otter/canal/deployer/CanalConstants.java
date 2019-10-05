@@ -14,9 +14,17 @@ public class CanalConstants {
     public static final String ROOT                                 = "canal";
     public static final String CANAL_ID                             = ROOT + "." + "id";
     public static final String CANAL_IP                             = ROOT + "." + "ip";
+    public static final String CANAL_REGISTER_IP                    = ROOT + "." + "register.ip";
     public static final String CANAL_PORT                           = ROOT + "." + "port";
+    public static final String CANAL_USER                           = ROOT + "." + "user";
+    public static final String CANAL_PASSWD                         = ROOT + "." + "passwd";
     public static final String CANAL_METRICS_PULL_PORT              = ROOT + "." + "metrics.pull.port";
-    public static final String CANAL_ADMIN_JMX_PORT                 = ROOT + "." + "admin.jmx.port";
+    public static final String CANAL_ADMIN_MANAGER                  = ROOT + "." + "admin.manager";
+    public static final String CANAL_ADMIN_PORT                     = ROOT + "." + "admin.port";
+    public static final String CANAL_ADMIN_USER                     = ROOT + "." + "admin.user";
+    public static final String CANAL_ADMIN_PASSWD                   = ROOT + "." + "admin.passwd";
+    public static final String CANAL_ADMIN_AUTO_REGISTER            = ROOT + "." + "admin.register.auto";
+    public static final String CANAL_ADMIN_AUTO_CLUSTER             = ROOT + "." + "admin.register.cluster";
     public static final String CANAL_ZKSERVERS                      = ROOT + "." + "zkServers";
     public static final String CANAL_WITHOUT_NETTY                  = ROOT + "." + "withoutNetty";
 
@@ -47,6 +55,7 @@ public class CanalConstants {
     public static final String CANAL_MQ_CANALBATCHSIZE              = ROOT + "." + "mq.canalBatchSize";
     public static final String CANAL_MQ_CANALGETTIMEOUT             = ROOT + "." + "mq.canalGetTimeout";
     public static final String CANAL_MQ_FLATMESSAGE                 = ROOT + "." + "mq.flatMessage";
+    public static final String CANAL_MQ_PARALLELTHREADSIZE          = ROOT + "." + "mq.parallelThreadSize";
     public static final String CANAL_MQ_COMPRESSION_TYPE            = ROOT + "." + "mq.compressionType";
     public static final String CANAL_MQ_ACKS                        = ROOT + "." + "mq.acks";
     public static final String CANAL_MQ_TRANSACTION                 = ROOT + "." + "mq.transaction";
@@ -61,6 +70,11 @@ public class CanalConstants {
     public static final String CANAL_MQ_KAFKA_KERBEROS_ENABLE       = ROOT + "." + "mq.kafka.kerberos.enable";
     public static final String CANAL_MQ_KAFKA_KERBEROS_KRB5FILEPATH = ROOT + "." + "mq.kafka.kerberos.krb5FilePath";
     public static final String CANAL_MQ_KAFKA_KERBEROS_JAASFILEPATH = ROOT + "." + "mq.kafka.kerberos.jaasFilePath";
+    public static final String CANAL_MQ_USERNAME                    = ROOT + "." + "mq.username";
+    public static final String CANAL_MQ_PASSWORD                    = ROOT + "." + "mq.password";
+    public static final String CANAL_MQ_VHOST                       = ROOT + "." + "mq.vhost";
+    public static final String CANAL_MQ_ALIYUN_UID                  = ROOT + "." + "mq.aliyunuid";
+    public static final String CANAL_MQ_EXCHANGE                    = ROOT + "." + "mq.exchange";
 
     public static String getInstanceModeKey(String destination) {
         return MessageFormat.format(INSTANCE_MODE_TEMPLATE, destination);

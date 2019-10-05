@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alibaba.otter</groupId>
     <artifactId>canal.client-adapter</artifactId>
-    <version>1.1.4-SNAPSHOT</version>
+    <version>1.1.5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>canal client adapter module for otter ${project.version}</name>
 
@@ -20,9 +20,11 @@
         <module>common</module>
         <module>logger</module>
         <module>hbase</module>
-        <module>elasticsearch</module>
         <module>launcher</module>
         <module>rdb</module>
+        <module>es6x</module>
+        <module>es7x</module>
+        <module>escore</module>
     </modules>
 
     <licenses>
